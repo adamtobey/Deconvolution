@@ -1,0 +1,30 @@
+abstract
+	* statement of the problem: a naive solution to reversing convolution operations on images is to form a linear system with weights based on the convolution of the kernel, but when an image is convoluted and then compressed, error is introduced. This error propagates throughout the solution of the system chaotically and causes the naive solution to be essentially useless. 
+
+introduction
+	* definitions
+	* jpeg compresssion
+		* dct
+		* quantization step
+		* error in the frequency domain
+	* prior work
+		* blind deconvolution
+		* regularized filter
+		* weiner filter
+		* lucy-richardson algorithm
+	* algorithm abstract
+		* 
+
+body
+	* how error is introduced and its form
+	* spacial vs frequency domain
+	* creating a model of acceptable error
+	* ellipsoid form
+	* achieve acceptable error by projection
+	* high dimensional problems
+	* geometric model
+	* iterative algorithm for projection
+	* error reduction vs redistribution
+	* luminence normalization
+
+conclusion

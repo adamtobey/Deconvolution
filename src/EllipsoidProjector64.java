@@ -51,7 +51,7 @@ public class EllipsoidProjector64 {
 
 	private double vecMag(double[] vec) {
 		double mag = 0;
-		foreach (double c : vec) {
+		for (double c : vec) {
 			mag += c*c;
 		}
 		return Math.sqrt(mag);
@@ -94,7 +94,7 @@ public class EllipsoidProjector64 {
 		return ret;
 	}
 
-	private sphereProject(double[] center, double radius, double[] point) {
+	private double[] sphereProject(double[] center, double radius, double[] point) {
 		double[] norm = normalize(vecSub(point, center));
 		double[] point = vecAdd(center, vecScale(radius, norm));
 		return point;
@@ -111,7 +111,7 @@ public class EllipsoidProjector64 {
 	*/
 	private double[] surfaceParam(double[] radii, double[] norm) {
 		double num = 1;
-		foreach (double r : radii) {
+		for (double r : radii) {
 			num *= r;
 		}
 		double num2 = num*num;
@@ -182,17 +182,17 @@ public class EllipsoidProjector64 {
 	*/
 	private double curvature(double[] radii, double[] point, int b1, int b2) {
 		double[] xy = new double[]{point[b1], point[b2]};
-		double k = 0
+		double k = 0;
 		double p;
 		double r;
-		for (i = 0; i < 64; i++) {
+		for (int i = 0; i < 64; i++) {
 			if (i == b1 || i == b2) continue;
 			p = point[i]; 
 			r = radii[i];
 			k += p * p / (r * r);
 		}
 		double fact = Math.sqrt(1 - k);
-		double a = radii[b1] / fact, b = radii[b2] / fact};
+		double a = radii[b1] / fact, b = radii[b2] / fact;
 		double t = Math.atan(xy[1] / xy[0]);
 		double num = a * b;
 		double st = Math.sin(t), ct = Math.cos(t);
