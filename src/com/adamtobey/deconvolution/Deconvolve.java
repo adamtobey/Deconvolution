@@ -1,9 +1,11 @@
+package com.adamtobey.deconvolution;
+
 public class Deconvolve {
 
-	private DCTComputer dct;
+	private DCTComputer dctComputer;
 
 	public Deconvolve(DCTComputer dct) {
-		this.dct = dct;
+		this.dctComputer = dct;
 	}
 
 	/**
@@ -14,16 +16,16 @@ public class Deconvolve {
 		@param kernel the kernel used for the convolution in [x][y] format
 		@return the deconvolved image in [channel][x][y] format
 	*/
-	public int[] deconvovle(int[][][] image, int[][][][] qblocks, double[][] kernel) {
-		if (image.length != blocks.length) {
+	public int[][][] deconvovle(int[][][] image, int[][][][] qblocks, double[][] kernel) {
+		if (image.length != qblocks.length) {
 			throw new IllegalArgumentException("Image and block lengths must be the same");
 		}
-		int[] ret = new int[image.length];
+		int[][][] ret = new int[image.length][image[0].length][image[0][0].length];
 		for (int channel = 0, len = image.length; channel < len; channel++) {
 			ret[channel] = decon(image[channel], qblocks[channel], kernel);
 		}
 		return ret;
-
+	}
 
 	/**
 		deconvolves an image channel as a SimpleMatrix that convoluted with the given kernel
@@ -55,7 +57,7 @@ public class Deconvolve {
 						y = cy - dkwidth;
 						if (y < 0 || y > height) continue;
 						
-						coeff[x * width + y][cx * width + cy] = kernel[kx][ky];
+						coefficients[x * width + y][cx * width + cy] = kernel[kx][ky];
 					}
 				}
 			}
@@ -63,8 +65,8 @@ public class Deconvolve {
 
 		// TODO swap indices
 		double[][] imageColumnVector = new double[count][1];
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
+		for (x = 0; x < width; x++) {
+			for (y = 0; y < height; y++) {
 				imageColumnVector[x * width + height][1] = (double) image[x][y];
 			}
 		}
@@ -79,7 +81,7 @@ public class Deconvolve {
 		solver.solve(output, solution);
 		
 		// DCT solution
-		double[][][] dct = DCTComputer.forward(solution);
+		double[][][] dct = dctComputer.forward(solution);
 		int blocks = dct.length;
 		int dctWidth = dct[0].length;
 		int dctHeight = dct[0][0].length;
@@ -96,7 +98,7 @@ public class Deconvolve {
 			normalize(adjusted[i], norm[i]/adjusted[i][0][0]);
 		}
 		// IDCT
-		double[][] ret = DCTComputer.backward(adjusted);
+		double[][] ret = dctComputer.backward(adjusted);
 		return ret;
 		// return
 	}

@@ -1,3 +1,5 @@
+package com.adamtobey.deconvolution;
+
 public interface DCTComputer {
 
 	/**

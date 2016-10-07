@@ -1,3 +1,5 @@
+package com.adamtobey.deconvolution;
+
 public class EllipsoidProjector64 {
 
 	public double[][] project(double[][] matrix, int[][] errorBounds) {
